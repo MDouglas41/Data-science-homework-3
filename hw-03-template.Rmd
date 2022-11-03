@@ -15,27 +15,58 @@ library(scales)
 ### Exercise 1
 
 ```{r hw3-ex1}
-# remove this comment and add the code for Exercise 1 here
+library(readr)
+pac_2000 <- read_csv("data/pac_2000.csv")
+pac_2002 <- read_csv("data/pac_2002.csv")
+pac_2004 <- read_csv("data/pac_2004.csv")
+pac_2006 <- read_csv("data/pac_2006.csv")
+pac_2008 <- read_csv("data/pac_2008.csv")
+pac_2010 <- read_csv("data/pac_2010.csv")
+pac_2012 <- read_csv("data/pac_2012.csv")
+pac_2014 <- read_csv("data/pac_2014.csv")
+pac_2016 <- read_csv("data/pac_2016.csv")
+pac_2018 <- read_csv("data/pac_2018.csv")
+pac_2020 <- read_csv("data/pac_2020.csv")
+
+pac_all <- list(pac_2000, pac_2002, pac_2004, pac_2006, pac_2008, pac_2010, pac_2012, pac_2014, pac_2016, pac_2018, pac_2020)
+
+  
+Reduce(function(x, y) merge(x, y, all=TRUE), pac_all) 
+ 
+
+
 
 ```
 
 
-_Remove this text, and add your answer for Exercise 1 here._
+2,194 observations and 7 variables
 
 ### Exercise 2
 
 ```{r hw3-ex2}
-# remove this comment and add the code for Exercise 2 here
+pac_all_backup <- read_csv("data/pac_all_backup.csv")
+pac_all_backup %>% 
+  separate(country_parent, into = c('Country', 'parent'), sep = "/" )
 
 ```
 
 
-_Remove this text, and add your answer for Exercise 2 here._
 
 ### Exercise 3
 
 ```{r hw3-ex3}
-# remove this comment and add the code for Exercise 3 here
+library(stringr)
+pac_all_backup %>% 
+  separate(country_parent, into = c('Country', 'parent'), sep = "/" )
+col_um = c("[$]"='' , ','= '')
+pac_all_backup$total <- str_replace_all(pac_all_backup$total, col_um)
+pac_all_backup$dems <- str_replace_all(pac_all_backup$dems, col_um)
+pac_all_backup$repubs <- str_replace_all(pac_all_backup$repubs, col_um)
+
+ pac_all_backup <- transform(pac_all_backup, total = as.numeric(total), 
+               dems = as.numeric(dems), repubs = as.numeric(repubs))
+
+print(pac_all_backup)
 
 ```
 
@@ -45,7 +76,24 @@ _Remove this text, and add your answer for Exercise 3 here._
 ### Exercise 4
 
 ```{r hw3-ex4}
-# remove this comment and add the code for Exercise 4 here
+pac_all_backup %>% 
+  separate(country_parent, into = c('Country', 'parent'), sep = "/" )
+col_um = c("[$]"='' , ','= '')
+pac_all_backup$total <- str_replace_all(pac_all_backup$total, col_um)
+pac_all_backup$dems <- str_replace_all(pac_all_backup$dems, col_um)
+pac_all_backup$repubs <- str_replace_all(pac_all_backup$repubs, col_um)
+
+ pac_all_backup <- transform(pac_all_backup, total = as.numeric(total), 
+               dems = as.numeric(dems), repubs = as.numeric(repubs)) 
+
+   geom_line(filter(pac_all_backup, country == "Canada"), aes(x = year , y = total, fill = country )) +
+  labs(
+    x = "Loan amount ($)",
+    y = "Density",
+    title = "Amounts of Lending Club loans"
+  )
+
+  
 
 ```
 
